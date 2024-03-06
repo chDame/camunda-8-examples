@@ -7,6 +7,8 @@ import { IFormViewer } from '../store/model';
 import { Component, FC } from 'react';
 
 const getFormFinder = (formViewer: IFormViewer): FC<IFormViewer> => {
+  console.log(formViewer.schema);
+  console.log(formViewer);
   if (formService.customFormExists(formViewer.formKey)) {
     return formService.getForm(formViewer.formKey)!;
   }

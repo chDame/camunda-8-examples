@@ -3,11 +3,15 @@ package org.example.camunda.process.solution.facade;
 import io.camunda.operate.exception.OperateException;
 import io.camunda.operate.model.ProcessDefinition;
 import io.camunda.zeebe.client.ZeebeClient;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.example.camunda.process.solution.ProcessVariables;
 import org.example.camunda.process.solution.security.annotation.IsAuthenticated;
 import org.example.camunda.process.solution.service.OperateService;
 import org.slf4j.Logger;
@@ -28,10 +32,50 @@ public class ProcessController {
   private static final Logger LOG = LoggerFactory.getLogger(ProcessController.class);
   private final ZeebeClient zeebe;
   private final OperateService operateService;
+  private static SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:SS");
 
   public ProcessController(ZeebeClient client, OperateService operateService) {
     this.zeebe = client;
     this.operateService = operateService;
+  }
+
+  public static int counter = 0;
+
+  public static String generateUUID() {
+    // for demo reasons we generate something readable
+    if (counter == 0) {
+      counter =
+          Calendar.getInstance().get(Calendar.MINUTE) + Calendar.getInstance().get(Calendar.SECOND);
+    } else {
+      counter++;
+    }
+    String result = "A-" + Calendar.getInstance().get(Calendar.DAY_OF_YEAR) + counter;
+    return result;
+  }
+
+  @GetMapping("/refund/{orderId}")
+  public void refund(@PathVariable String orderId) {
+    zeebe.newPublishMessageCommand().messageName("RETURN").correlationKey(orderId).send();
+  }
+
+  @GetMapping("/simulateMailOrder")
+  public String simulateMailOrder() {
+
+    ProcessVariables variables =
+        new ProcessVariables()
+            .setOrderId(generateUUID())
+            .setCustomer("jothikiruthika.viswanathan@camunda.com")
+            .setProduct("B")
+            .setQty((int) Math.round(Math.random() * 100))
+            .addInformation("Mail received on " + sdf.format(new Date()));
+    zeebe
+        .newCreateInstanceCommand()
+        .bpmnProcessId("price_process")
+        .latestVersion()
+        .variables(variables)
+        .send();
+
+    return variables.getOrderId();
   }
 
   @IsAuthenticated
@@ -40,6 +84,10 @@ public class ProcessController {
       @PathVariable String bpmnProcessId, @RequestBody Map<String, Object> variables) {
 
     LOG.info("Starting process `" + bpmnProcessId + "` with variables: " + variables);
+
+    if (bpmnProcessId.equals("price_process")) {
+      variables.put("orderId", generateUUID());
+    }
 
     zeebe
         .newCreateInstanceCommand()

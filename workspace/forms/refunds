@@ -1,0 +1,74 @@
+{
+  "name" : "refunds",
+  "modified" : 1709739040364,
+  "schema" : {
+    "components" : [ {
+      "label" : "Product",
+      "type" : "textfield",
+      "layout" : {
+        "row" : "Row_0o071nj",
+        "columns" : null
+      },
+      "id" : "Field_1uykti3",
+      "key" : "product"
+    }, {
+      "label" : "Quantity",
+      "type" : "number",
+      "layout" : {
+        "row" : "Row_13g5jzg",
+        "columns" : null
+      },
+      "id" : "Field_19d7nug",
+      "key" : "qty"
+    }, {
+      "label" : "Customer",
+      "type" : "textfield",
+      "layout" : {
+        "row" : "Row_02i3tye",
+        "columns" : null
+      },
+      "id" : "Field_1e49c75",
+      "key" : "customer",
+      "validate" : {
+        "validationType" : "email"
+      }
+    }, {
+      "label" : "Informations",
+      "type" : "table",
+      "layout" : {
+        "row" : "Row_16w582n",
+        "columns" : null
+      },
+      "dataSource" : "=informations",
+      "rowCount" : 10,
+      "id" : "Field_1ddp7uh",
+      "columns" : [ {
+        "label" : "Date",
+        "key" : "date"
+      }, {
+        "label" : "Message",
+        "key" : "message"
+      } ]
+    }, {
+      "label" : "Process refunds",
+      "type" : "checkbox",
+      "layout" : {
+        "row" : "Row_0fbvlnr",
+        "columns" : null
+      },
+      "id" : "Field_1boz1cq",
+      "key" : "processRefunds"
+    } ],
+    "schemaVersion" : 14,
+    "type" : "default",
+    "id" : "Form_6167747",
+    "executionPlatform" : "Camunda Cloud",
+    "executionPlatformVersion" : "1.1",
+    "exporter" : {
+      "name" : "Camunda Modeler",
+      "version" : "5.0.0"
+    }
+  },
+  "previewData" : { },
+  "generator" : "formJs"
+}

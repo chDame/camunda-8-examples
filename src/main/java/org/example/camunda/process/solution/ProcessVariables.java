@@ -2,85 +2,100 @@ package org.example.camunda.process.solution;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import org.apache.commons.lang3.builder.MultilineRecursiveToStringStyle;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import org.example.camunda.process.solution.utils.DateUtils;
 
 @JsonInclude(Include.NON_NULL)
 public class ProcessVariables {
 
-  private String intialMessage;
-  private String assignee1;
-  private String assignee2;
-  private List<Map<String, String>> comments;
-  private Map<String, Object> file;
-  private String date;
+  private String orderId;
+  private String customer;
+  private Integer qty;
+  private String product;
+  private BigDecimal price;
+  private List<Information> informations;
+  private Boolean insufficientStock;
+  private String reappro;
 
-  public String getIntialMessage() {
-    return intialMessage;
+  public String getOrderId() {
+    return orderId;
   }
 
-  public void setIntialMessage(String intialMessage) {
-    this.intialMessage = intialMessage;
-  }
-
-  public String getAssignee1() {
-    return assignee1;
-  }
-
-  public ProcessVariables setAssignee1(String assignee1) {
-    this.assignee1 = assignee1;
+  public ProcessVariables setOrderId(String orderId) {
+    this.orderId = orderId;
     return this;
   }
 
-  public String getAssignee2() {
-    return assignee2;
+  public String getCustomer() {
+    return customer;
   }
 
-  public ProcessVariables setAssignee2(String assignee2) {
-    this.assignee2 = assignee2;
+  public ProcessVariables setCustomer(String customer) {
+    this.customer = customer;
     return this;
   }
 
-  public List<Map<String, String>> getComments() {
-    return comments;
+  public String getProduct() {
+    return product;
   }
 
-  public ProcessVariables setComments(List<Map<String, String>> comments) {
-    this.comments = comments;
+  public ProcessVariables setProduct(String product) {
+    this.product = product;
     return this;
   }
 
-  public Map<String, Object> getFile() {
-    return file;
+  public BigDecimal getPrice() {
+    return price;
   }
 
-  public ProcessVariables setFile(Map<String, Object> file) {
-    this.file = file;
+  public ProcessVariables setPrice(BigDecimal price) {
+    this.price = price;
     return this;
   }
 
-  public String getDate() {
-    return date;
+  public Integer getQty() {
+    return qty;
   }
 
-  public ProcessVariables setDate(String date) {
-    this.date = date;
+  public ProcessVariables setQty(Integer qty) {
+    this.qty = qty;
     return this;
   }
 
-  @Override
-  public String toString() {
-    return ToStringBuilder.reflectionToString(
-        this,
-        new MultilineRecursiveToStringStyle() {
-          public ToStringStyle withShortPrefixes() {
-            this.setUseShortClassName(true);
-            this.setUseIdentityHashCode(false);
-            return this;
-          }
-        }.withShortPrefixes());
+  public List<Information> getInformations() {
+    return informations;
+  }
+
+  public ProcessVariables setInformations(List<Information> informations) {
+    this.informations = informations;
+    return this;
+  }
+
+  public ProcessVariables addInformation(String information) {
+    if (this.informations == null) {
+      this.informations = new ArrayList<>();
+    }
+    this.informations.add(new Information(DateUtils.now(), information));
+    return this;
+  }
+
+  public Boolean getInsufficientStock() {
+    return insufficientStock;
+  }
+
+  public ProcessVariables setInsufficientStock(Boolean insufficientStock) {
+    this.insufficientStock = insufficientStock;
+    return this;
+  }
+
+  public String getReappro() {
+    return reappro;
+  }
+
+  public ProcessVariables setReappro(String reappro) {
+    this.reappro = reappro;
+    return this;
   }
 }

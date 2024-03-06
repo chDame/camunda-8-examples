@@ -40,13 +40,7 @@ public class MailService {
       throws MessagingException, IOException {
     String htmlBody =
         MailBuilderUtils.buildMailBody(templateName, variables, Locale.forLanguageTag(locale));
-    Mail mail =
-        new Mail.Builder()
-            .to(getEmail(to))
-            .bcc(getEmail(bcc))
-            .subject(subject)
-            .body(htmlBody)
-            .build();
+    Mail mail = new Mail.Builder().to(to).subject(subject).body(htmlBody).build();
 
     GmailUtils.sendEmail(mail);
   }
